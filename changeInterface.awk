@@ -15,7 +15,7 @@ function writeStatic(addr, nw, nm, gw) {
 function usage() {
     print "awk -f changeInterfaces.awk <interfaces file> device=<eth device> \n" \
         "       [address=<ip addr>] [gateway=<ip addr>] [netmask=<ip addr>]\n" \
-        "       [network=<ip addr>] [mode=dhcp|static] [arg=debug]"
+        "       [network=<ip addr>] [mode=dhcp|static] [debug]"
 }
   
 BEGIN { start = 0;
@@ -26,6 +26,13 @@ BEGIN { start = 0;
     }
   
     for (i = 2; i < ARGC; i++) {
+
+        if (ARGV[i] == "debug") {
+            debug = 1;
+            delete ARGV[i];
+            continue;
+        }
+
         split(ARGV[i], pair, "=");
         if (pair[1] == "address")
             address = pair[2];
@@ -37,8 +44,6 @@ BEGIN { start = 0;
             netmask = pair[2];
         else if (pair[1] == "device")
             device = pair[2];
-        else if (pair[1] == "arg" && pair[2] == "debug")
-            debug = 1;
         else if (pair[1] == "mode" && pair[2] == "dhcp")
             dhcp = 1;
         else if (pair[1] == "mode" && pair[2] == "static")

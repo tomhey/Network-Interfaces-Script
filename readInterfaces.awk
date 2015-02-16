@@ -6,10 +6,13 @@ BEGIN { start = 0;
     }
  
     for (i = 2; i < ARGC; i++) {
-        if (ARGV[i] == debug) {
+
+        if (ARGV[i] == "debug") {
             debug = 1;
+            delete ARGV[i];
             continue;
         }
+
         split(ARGV[i], arg, "=");
         if (arg[1] == "device")
             device = arg[2];
