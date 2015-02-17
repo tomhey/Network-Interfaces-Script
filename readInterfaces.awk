@@ -55,13 +55,24 @@ BEGIN { start = 0;
         }
     }
  
+    if ($1 == "auto")  {
+        static = 0;
+        next;
+    }
+
+    # Skip comment and blank lines
+    if ($0 ~ /^#/ ||
+        $0 ~ /^[ \t]*$/ ) {
+        next;
+    }
+
     # At here, it means we are after the iface static line of
     # after the device we are searching for
     # Scan for the static content
     if (static) {
  
         if (debug)
-            print "static - ", $0, $1;
+            print $0
  
         if ($1 == "address") {
             address = $2;
